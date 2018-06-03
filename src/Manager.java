@@ -21,11 +21,14 @@ public class Manager extends JPanel implements MouseListener, MouseMotionListene
 	JTextField redTF;
 	JTextField greenTF;
 	JTextField blueTF;
+	JTextField numSidesTF;
 
 	ButtonGroup shapeGroup;
 
 	JRadioButton ellipseRB;
 	JRadioButton rectangleRB;
+	JRadioButton triangleRB;
+	JRadioButton polygonRB;
 
 	public static void main(String[] args) {
 		new Manager();
@@ -36,21 +39,29 @@ public class Manager extends JPanel implements MouseListener, MouseMotionListene
 		redTF = new JTextField(3);
 		greenTF = new JTextField(3);
 		blueTF = new JTextField(3);
+		numSidesTF = new JTextField(3);
 
 		shapeGroup = new ButtonGroup();
 		ellipseRB = new JRadioButton("ellipse");
 		rectangleRB = new JRadioButton("rectangle");
+		triangleRB = new JRadioButton("triangle");
+		polygonRB = new JRadioButton("polygon");
 
 		shapeGroup.add(ellipseRB);
 		shapeGroup.add(rectangleRB);
+		shapeGroup.add(triangleRB);
+		shapeGroup.add(polygonRB);
 
 		ellipseRB.setSelected(true);
 		add(ellipseRB);
 		add(rectangleRB);
+		add(triangleRB);
+		add(polygonRB);
 
 		redTF.setText("0");
 		greenTF.setText("0");
 		blueTF.setText("0");
+		numSidesTF.setText("4");
 
 		add(new JLabel("red:"));
 		add(redTF);
@@ -58,6 +69,8 @@ public class Manager extends JPanel implements MouseListener, MouseMotionListene
 		add(greenTF);
 		add(new JLabel("blue:"));
 		add(blueTF);
+		add(new JLabel("number of sides:"));
+		add(numSidesTF);
 
 		setPreferredSize(new Dimension(500, 500));
 		window = new JFrame();
@@ -87,6 +100,11 @@ public class Manager extends JPanel implements MouseListener, MouseMotionListene
 		} else if (rectangleRB.isSelected()) {
 			((Rectangle) currentShape).setWidth(e.getX() - currentShape.getX());
 			((Rectangle) currentShape).setHeight(e.getY() - currentShape.getY());
+		} else if (triangleRB.isSelected()) {
+			((Triangle) currentShape).setWidth(e.getX() - currentShape.getX());
+			((Triangle) currentShape).setHeight(e.getY() - currentShape.getY());
+		} else if (polygonRB.isSelected()) {
+			((Polygon) currentShape).setCentDist(e.getX() - currentShape.getX());
 		}
 
 		repaint();
@@ -109,6 +127,10 @@ public class Manager extends JPanel implements MouseListener, MouseMotionListene
 			currentShape = new Ellipse(e.getX(), e.getY(), 0, 0);
 		} else if (rectangleRB.isSelected()) {
 			currentShape = new Rectangle(e.getX(), e.getY(), 0, 0);
+		} else if (triangleRB.isSelected() ) {
+			currentShape = new Triangle(e.getX(), e.getY(), 0, 0);
+		} else if (polygonRB.isSelected()) {
+			currentShape = new Polygon(e.getX(), e.getY(), 0, Integer.parseInt(numSidesTF.getText()));
 		}
 
 		int r = clamp(Integer.parseInt(redTF.getText()), 0, 255);
